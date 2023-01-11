@@ -9,6 +9,8 @@ from bs4 import BeautifulSoup
 config = configparser.ConfigParser()
 config.read("config.ini")
 
+FIRST_PAGE = 1
+LAST_PAGE = 20
 
 def parse(films):
     headers = {
@@ -20,7 +22,7 @@ def parse(films):
         "User-agent": config["HEADERS"]["User-agent"]
     }
     
-    for page in range(1, 21):
+    for page in range(FIRST_PAGE, LAST_PAGE + 1):
         url = f'https://www.kinopoisk.ru/lists/movies/popular/?page={page}'
         r = requests.get(url=url, headers=headers)
 
@@ -67,4 +69,4 @@ if __name__ == "__main__":
     parse(films)
 
     with open("items.json", "w") as write_file:
-        json.dump(films, write_file, indent=4, ensure_ascii=False, separators=(',', ': '))
+        json.dump(films, write_file, indent=4, separators=(',', ': '))
